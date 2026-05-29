@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Login Page{% endblock %}
+{% block h1 %}Login Page{% endblock %}
+{% block content %}
+    <form action="#" method="POST">
+        <p><input type="text" name="username" placeholder="Enter username"/></p>
+        <p><input type="password" name="pwd" placeholder="Enter password"/></p>
+        {% if error %}
+            <p style="color:red;">{{ error }}</p>
+        {% endif %}
+        <p><input type="submit" value="Submit"/></p>
+    </form>
+{% endblock %}

@@ -1,22 +1,28 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from datetime import timedelta
-import secrets
-from server.models import User, db
+from pathlib import Path
 import os
+from server.models import User, db
+import server.config as config
+
+config_values = config.load_config()
 
 app = Flask(__name__)
+#Needed to manage sessions, should be kept secret in production, can be generated using secrets.token_hex(32) for example
+app.secret_key = config_values["BACKEND"]["SECRET_KEY"]
+app.permanent_session_lifetime = timedelta(
+    minutes=config_values["BACKEND"].get("SESSION_LIFETIME_MINUTES", 5)
+)
 
 #Initiate DB
-base_dir = os.path.dirname(os.path.abspath(__file__))
-app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{base_dir}/db/app.db"
+base_dir = Path(__file__).resolve().parent
+db_path = base_dir / "db" / config_values["DB"]["DB_NAME"]
+app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
 db.init_app(app)
 
-#Create tables, create_all does not update tables if they are already in the database
+#Create tables, create_all does not update tables if they are already in the database 
 with app.app_context():
     db.create_all()
-
-app.secret_key = secrets.token_hex(32)
-app.permanent_session_lifetime = timedelta(minutes=5)
 
 @app.route("/")
 def home():
@@ -96,4 +102,4 @@ def register():
 
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True) #debug=True for dev purposes
+    app.run(port=5000, debug=True)  # debug=True for dev purposes

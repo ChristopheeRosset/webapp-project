@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from datetime import timedelta
 from pathlib import Path
 import os
@@ -56,7 +56,9 @@ def login():
 def user():
     if "user_id" in session:
         user = db.session.execute(db.select(User).filter_by(id=session["user_id"])).scalar()
-        return f"<h1>Welcome {user.name}</h1>"
+        username = user.name
+        flash("Connected!", "info")
+        return render_template("user.html", name=username)
     else:
         return redirect(url_for("login"))
     
@@ -100,6 +102,14 @@ def register():
     else:
         return render_template("register.html")
 
+@app.route("/unregister", methods=["POST"])
+def unregister():
+    if "user_id" in session:
+        user = db.session.execute(db.select(User).filter_by(id=session["user_id"])).scalar()
+        db.session.delete(user)
+        db.session.commit()
+        session.pop("user_id", None)
+        return redirect(url_for("home"))
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)  # debug=True for dev purposes

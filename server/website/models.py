@@ -1,10 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy.orm import DeclarativeBase
 
 db = SQLAlchemy()
 
-#User class inherits from Base, the definition is stored within Base.metadata
+# Class inherits from db.Model which is a base class for all models from SQLAlchemy, and which itself inherits from DeclarativeBase
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)

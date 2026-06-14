@@ -15,16 +15,20 @@
             
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{{ url_for('views.home') }}">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <div class="dropdown">
                     <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 1.5rem; color: inherit; text-decoration: none;">
                         ☰
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="/login">Login</a>
-                        <a class="dropdown-item" href="/register">Sign up</a>
-                        <a class="dropdown-item" href="/logout">Logout</a>
+                        {% if session.get('user_name') %}
+                            <a class="dropdown-item" href="{{ url_for('views.user') }}">Profile</a>
+                            <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a>
+                        {% else %}
+                            <a class="dropdown-item" href="{{ url_for('auth.login') }}">Login</a>
+                            <a class="dropdown-item" href="{{ url_for('auth.register') }}">Sign up</a>
+                        {% endif %}
                     </div>
                 </div>
             </ul>

@@ -1,15 +1,18 @@
-# Python
-__pycache__/
-*.py[cod]
-server/config/config.*
 # Virtual environment
 venv/
 .venv/
 
+# Python
+__pycache__/
+*.py[cod]
+
+# Secret configuration files
+server/config/config.*
+
 # SQLite DB
-server/db/*
+server/website/db/*
 *.sqlite3
 
-# Environment
-.env
-.env.*
+# Website
+server/website/__pycache__/
+server/website/static/images/*

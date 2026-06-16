@@ -14,14 +14,18 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
     db.init_app(app)
 
+    #Import blueprints
     from .auth import auth
     from .views import views
     
+    #Register blueprints
     app.register_blueprint(auth)
     app.register_blueprint(views)
 
+    #Import models, must be done before calling createall()
     from .models import User
 
+    #Create tables, create_all does not update tables if they are already in the database
     with app.app_context():
         db.create_all()
 

@@ -1,0 +1,29 @@
+<div class="vocabulary-table">
+
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Word</th>
+                <th>Reading</th>
+                <th>Meaning</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if vocabulary %}
+            {% for voc in vocabulary %}
+            <tr>
+                <td>
+                    <input type="text" name="word-{{ voc.id }}" value="{{ voc.Word | safe }}" class="form-control">
+                </td>
+                <td>
+                    <input type="text" name="reading-{{ voc.id }}" value="{{ voc.Reading | safe }}" class="form-control">
+                </td>
+                <td>
+                    <input type="text" name="meaning-{{ voc.id }}" value="{{ voc.Meaning | safe }}" class="form-control">
+                </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+</div>

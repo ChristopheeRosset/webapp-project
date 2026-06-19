@@ -1,5 +1,6 @@
 from pathlib import Path
 from flask import Flask
+from flask_migrate import Migrate
 from .models import db
 import server.config as config
 
@@ -24,9 +25,13 @@ def create_app():
 
     #Import models, must be done before calling createall()
     from .models import User
+    from .models import Vocabulary
 
     #Create tables, create_all does not update tables if they are already in the database
     with app.app_context():
         db.create_all()
+
+    #For migration purposes
+    migrate = Migrate (app, db)
 
     return app

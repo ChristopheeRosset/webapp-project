@@ -8,10 +8,12 @@ __pycache__/
 
 # Secret configuration files
 server/config/config.*
+migrations/
 
 # SQLite DB
 server/website/db/*
 *.sqlite3
+
 
 # Website
 server/website/__pycache__/

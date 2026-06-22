@@ -37,3 +37,19 @@ class Vocabulary(db.Model):
 
     def __repr__(self):
         return f"<Vocabulary id={self.id} word={self.word}>"
+    
+class Kanji (db.Model):
+    __tablename__ = 'kanji'
+    id = db.Column(db.Integer, primary_key=True)
+    character = db.Column(db.String(10), nullable=False, unique=True)
+    reading = db.Column(db.String(100), nullable=False)
+    meaning = db.Column(db.String(200), nullable=False)
+    voc = db.relationship('MainVocabulary', backref='kanji')
+
+class MainVocabulary(db.Model):
+    __tablename__ = 'mainVocabulary'
+    id = db.Column(db.Integer, primary_key=True)
+    kanji_id = db.Column(db.Integer, db.ForeignKey('kanji.id'))
+    word = db.Column(db.String(100), nullable=False)
+    reading = db.Column(db.String(100), nullable=False) 
+    meaning = db.Column(db.String(200), nullable=False)

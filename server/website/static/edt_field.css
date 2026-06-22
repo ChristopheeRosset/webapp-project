@@ -1,0 +1,15 @@
+.editable-field {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.editable-field:focus {
+    border: 1px solid #ced4da;
+    background: white;
+    cursor: text;
+}
+
+.kanji-char:hover {
+    color: pink;
+}

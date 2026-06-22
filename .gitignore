@@ -5,6 +5,7 @@ venv/
 # Python
 __pycache__/
 *.py[cod]
+.vscode/
 
 # Secret configuration files
 server/config/config.*
@@ -13,7 +14,6 @@ migrations/
 # SQLite DB
 server/website/db/*
 *.sqlite3
-
 
 # Website
 server/website/__pycache__/

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from server.website.models import User, Vocabulary, db
-from server.website.services.user_service import upload_csv_into_profile, get_user_vocabulary
+from server.website.models import User, Vocabulary, Kanji, db
+from server.website.services.user_service import upload_csv_into_profile, get_user_vocabulary, save_voc
 from werkzeug.utils import secure_filename
 
 views = Blueprint('views', __name__)
@@ -8,6 +8,12 @@ views = Blueprint('views', __name__)
 @views.route("/")
 def home():
     return render_template("home.html")
+
+@views.route("/kanji-list")
+def kanji_list():
+    #scalars extract all table objects, .all() returns them as a list
+    kanjiList = db.session.execute(db.select(Kanji)).scalars().all()
+    return render_template("kanji_list.html", kanjiList=kanjiList)
 
 @views.route("/user")
 def user():
@@ -63,22 +69,10 @@ def save_vocabulary():
         return redirect(url_for("auth.login"))
 
     user = db.session.execute(db.select(User).filter_by(name=session["user_name"])) .scalar()
-    if not user:
-        return redirect(url_for("auth.login"))
+    userId = user.id
 
-    vocs = db.session.execute(db.select(Vocabulary).filter_by(user_id=user.id)).scalars().all()
-    for voc in vocs:
-        word_value = request.form.get(f"word-{voc.id}")
-        reading_value = request.form.get(f"reading-{voc.id}")
-        meaning_value = request.form.get(f"meaning-{voc.id}")
+    #Update each voc line with current values and commit changes to DB
+    save_voc(userId)
 
-        if word_value is not None:
-            voc.word = word_value
-        if reading_value is not None:
-            voc.reading = reading_value
-        if meaning_value is not None:
-            voc.meaning = meaning_value
-
-    db.session.commit()
     flash("Vocabulary changes saved", "success")
     return redirect(url_for("views.vocabulary"))

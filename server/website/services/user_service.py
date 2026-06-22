@@ -1,6 +1,6 @@
 import pandas as pd
 from server.website.models import User,Vocabulary, db
-from flask import session
+from flask import session, request
 
 def upload_csv_into_profile(data, userId):
     try:
@@ -47,3 +47,19 @@ def get_user_vocabulary (userId):
     ]
 
     return vocabulary_data
+
+def save_voc (userId):
+    vocs = db.session.execute(db.select(Vocabulary).filter_by(user_id=userId)).scalars().all()
+    for voc in vocs:
+        word_value = request.form.get(f"word-{voc.id}")
+        reading_value = request.form.get(f"reading-{voc.id}")
+        meaning_value = request.form.get(f"meaning-{voc.id}")
+
+        if word_value is not None:
+            voc.word = word_value
+        if reading_value is not None:
+            voc.reading = reading_value
+        if meaning_value is not None:
+            voc.meaning = meaning_value
+    
+    db.session.commit()

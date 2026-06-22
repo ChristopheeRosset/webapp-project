@@ -13,13 +13,16 @@
             {% for voc in vocabulary %}
             <tr>
                 <td>
-                    <input type="text" name="word-{{ voc.id }}" value="{{ voc.Word | safe }}" class="form-control">
+                    <input type="text" name="word-{{ voc.id }}" value="{{ voc.Word | safe }}" 
+                        class="form-control editable-field" readonly>
                 </td>
                 <td>
-                    <input type="text" name="reading-{{ voc.id }}" value="{{ voc.Reading | safe }}" class="form-control">
+                    <input type="text" name="reading-{{ voc.id }}" value="{{ voc.Reading | safe }}" 
+                        class="form-control editable-field" readonly>
                 </td>
                 <td>
-                    <input type="text" name="meaning-{{ voc.id }}" value="{{ voc.Meaning | safe }}" class="form-control">
+                    <input type="text" name="meaning-{{ voc.id }}" value="{{ voc.Meaning | safe }}"
+                        class="form-control editable-field" readonly>
                 </td>
             </tr>
             {% endfor %}

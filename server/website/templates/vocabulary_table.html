@@ -13,16 +13,21 @@
             {% for voc in vocabulary %}
             <tr>
                 <td>
+                    <span class="display-field">
+                        {% for char in voc.Word %}<span class="jap-word">{{ char }}</span>{% endfor %}
+                    </span>
                     <input type="text" name="word-{{ voc.id }}" value="{{ voc.Word | safe }}" 
-                        class="form-control editable-field" readonly>
+                        class="form-control editable-field" style="display:none;">
                 </td>
                 <td>
+                    <span class="display-field">{{ voc.Reading}}</span>
                     <input type="text" name="reading-{{ voc.id }}" value="{{ voc.Reading | safe }}" 
-                        class="form-control editable-field" readonly>
+                        class="form-control editable-field" style="display:none;">
                 </td>
                 <td>
+                    <span class="display-field"> {{ voc.Meaning }}</span>
                     <input type="text" name="meaning-{{ voc.id }}" value="{{ voc.Meaning | safe }}"
-                        class="form-control editable-field" readonly>
+                        class="form-control editable-field" style="display:none;">
                 </td>
             </tr>
             {% endfor %}

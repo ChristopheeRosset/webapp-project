@@ -3,7 +3,7 @@
 {% block content %}
 <h1>Kanji List</h1>
 {% for kanji in kanjiList %}
-<div class="kanji-block">
+<div class="kanji-block" id = "{{ kanji.character}}">
     <div class="kanji-title">{{ kanji.character }}</div>
     <div class="pronunciation">{{ kanji.reading }} — {{ kanji.meaning }}</div>
     <ul class="vocab-list">

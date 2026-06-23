@@ -59,9 +59,10 @@ def vocabulary():
         return redirect(url_for("views.vocabulary"))
     #User is in session and it's a GET request
     else:
-        #Get current user vocabulary
+        #Get current user vocabulary and general kanji list
         vocabulary = get_user_vocabulary(userId)
-        return render_template("vocabulary.html", vocabulary=vocabulary)
+        kanjiList = db.session.execute(db.select(Kanji)).scalars().all()
+        return render_template("vocabulary.html", vocabulary=vocabulary, kanjiList=kanjiList)
 
 @views.route("/vocabulary/save", methods=["POST"])
 def save_vocabulary():

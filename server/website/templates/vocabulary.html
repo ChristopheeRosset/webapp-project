@@ -27,7 +27,8 @@
             </form>
         </div>
         <div class="col-md-6 d-flex justify-content-md-end align-items-end">
-            <button type="submit" form="save-voc-form" class="btn btn-secondary">Save Changes</button>
+            <button type = "button" id="edit-btn" class="btn btn-warning">Edit</button>
+            <button type="submit" form="save-voc-form" class="btn btn-secondary ml-5">Save Changes</button>
         </div>
     </div>
 
@@ -39,4 +40,8 @@
         </div>
     </form>
 </div>
+
+<script>
+    const kanjis = {{ kanjiList | map(attribute='character') | list | tojson }};
+</script>
 {% endblock %}

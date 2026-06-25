@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash, jsonify
 from server.website.models import User, Vocabulary, Kanji, db
 from server.website.services.user_service import upload_csv_into_profile, get_user_vocabulary, save_voc
 from werkzeug.utils import secure_filename
@@ -11,9 +11,14 @@ def home():
 
 @views.route("/kanji-list")
 def kanji_list():
-    #scalars extract all table objects, .all() returns them as a list
-    kanjiList = db.session.execute(db.select(Kanji)).scalars().all()
+    kanjiList = db.paginate(db.select(Kanji), per_page=100)
     return render_template("kanji_list.html", kanjiList=kanjiList)
+
+#Route will be used as API endpoint to return specific data instead of loading whole page kanji-list
+@views.route("/kanji-chars")
+def getKanjiList ():
+    kanjiList = db.session.execute(db.select(Kanji.id, Kanji.character)).all()
+    return jsonify([{'id': kanjis.id, 'character': kanjis.character} for kanjis in kanjiList])
 
 @views.route("/user")
 def user():
@@ -61,8 +66,8 @@ def vocabulary():
     else:
         #Get current user vocabulary and general kanji list
         vocabulary = get_user_vocabulary(userId)
-        kanjiList = db.session.execute(db.select(Kanji)).scalars().all()
-        return render_template("vocabulary.html", vocabulary=vocabulary, kanjiList=kanjiList)
+        #kanjiList = db.session.execute(db.select(Kanji)).scalars().all()
+        return render_template("vocabulary.html", vocabulary=vocabulary)
 
 @views.route("/vocabulary/save", methods=["POST"])
 def save_vocabulary():

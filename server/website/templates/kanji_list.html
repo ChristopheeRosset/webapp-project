@@ -17,4 +17,18 @@
 </div>
 {% endfor %}
 
+  <div class="page-items">{{ kanjiList.first }} - {{ kanjiList.last }} of {{ kanjiList.total }}</div>
+  <div class=pagination>
+    {% for page in kanjiList.iter_pages() %}
+      {% if page %}
+        {% if page != kanjiList.page %}
+          <a href="{{ url_for('views.kanji_list', page=page) }}">{{ page }}</a>
+        {% else %}
+          <strong>{{ page }}</strong>
+        {% endif %}
+      {% else %}
+        <span class=ellipsis>…</span>
+      {% endif %}
+    {% endfor %}
+  </div>
 {% endblock %}

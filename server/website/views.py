@@ -11,14 +11,20 @@ def home():
 
 @views.route("/kanji-list")
 def kanji_list():
-    kanjiList = db.paginate(db.select(Kanji), per_page=100)
+    perPage = 50;
+    kanjiList = db.paginate(db.select(Kanji), per_page=perPage)
     return render_template("kanji_list.html", kanjiList=kanjiList)
 
 #Route will be used as API endpoint to return specific data instead of loading whole page kanji-list
 @views.route("/kanji-chars")
 def getKanjiList ():
-    kanjiList = db.session.execute(db.select(Kanji.id, Kanji.character)).all()
-    return jsonify([{'id': kanjis.id, 'character': kanjis.character} for kanjis in kanjiList])
+    kanjiList = db.session.execute(db.select(Kanji.id, Kanji.kanji_char, Kanji.reading, Kanji.meaning)).all()
+    return jsonify([{
+        'id': kanjis.id,
+        'kanji_char': kanjis.kanji_char,
+        'reading': kanjis.reading,
+        'meaning': kanjis.meaning
+        } for kanjis in kanjiList])
 
 @views.route("/user")
 def user():

@@ -8,9 +8,10 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True)
-    email = db.Column(db.String(120), unique=True)
-    pwd = db.Column(db.String(512))  # hashes are ~ 256 chars minimum
+    name = db.Column(db.String(50), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    pwd = db.Column(db.String(512), nullable=False)  # hashes are ~ 256 chars minimum
+    voc = db.relationship('Vocabulary', backref='users')
 
     def __init__(self, name=None, email=None, pwd=None):
         self.name = name
@@ -31,10 +32,10 @@ class User(db.Model):
 class Vocabulary(db.Model):
     __tablename__ = 'vocabulary'
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer)
-    word = db.Column(db.String(100), unique=True)
-    reading = db.Column(db.String(100))
-    meaning = db.Column(db.Text)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    word = db.Column(db.String(100), unique=True, nullable=False)
+    reading = db.Column(db.String(100), nullable=False)
+    meaning = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
         return f"<Vocabulary id={self.id} word={self.word}>"
@@ -42,7 +43,7 @@ class Vocabulary(db.Model):
 class Kanji (db.Model):
     __tablename__ = 'kanji'
     id = db.Column(db.Integer, primary_key=True)
-    character = db.Column(db.String(10), nullable=False, unique=True)
+    kanji_char = db.Column(db.String(10), nullable=False, unique=True)
     reading = db.Column(db.String(100), nullable=False)
     meaning = db.Column(db.String(200), nullable=False)
     voc = db.relationship('MainVocabulary', backref='kanji')
@@ -50,7 +51,7 @@ class Kanji (db.Model):
 class MainVocabulary(db.Model):
     __tablename__ = 'mainVocabulary'
     id = db.Column(db.Integer, primary_key=True)
-    kanji_id = db.Column(db.Integer, db.ForeignKey('kanji.id'))
+    kanji_id = db.Column(db.Integer, db.ForeignKey('kanji.id'), nullable=False)
     word = db.Column(db.String(100), nullable=False)
     reading = db.Column(db.String(100), nullable=False) 
     meaning = db.Column(db.String(200), nullable=False)

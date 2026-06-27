@@ -15,12 +15,12 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-    
     <div class="row mb-4">
         <div class="col-md-6">
             <form method="POST" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="csv_file">Upload Vocabulary CSV:</label>
+                    <p><b>Do care to name your column exactly as below to avoid errors :)</b></p>
+                    <label for="csv_file">Upload Vocabulary CSV</label>
                     <input type="file" class="form-control-file" name="csv_file" accept=".csv" id="csv_file">
                 </div>
                 <button type="submit" class="btn btn-primary">Upload CSV</button>
@@ -40,4 +40,6 @@
         </div>
     </form>
 </div>
+<div id="kanji-preview"></div> 
+<script src="{{ url_for('static', filename='vocabulary.js') }}"> </script>
 {% endblock %}

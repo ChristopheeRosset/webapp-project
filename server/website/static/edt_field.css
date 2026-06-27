@@ -6,3 +6,19 @@
     cursor: pointer;
     background-color: rgba(255, 99, 71, 0.5);
 }
+
+#kanji-preview {
+    display: none;
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1000;
+}
+#kanji-preview.visible {
+    display: block;
+}
+
+body{
+    position:relative;
+}
